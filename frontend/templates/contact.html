@@ -233,6 +233,73 @@
             document.getElementById("submitText").innerText = t.submitText;
             document.getElementById("message").placeholder = t.messagePlaceholder;
         }
+
+        // Form submission handling
+        document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.innerHTML = '<span class="loading"></span> Sending...';
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                category: document.getElementById('category').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            try {
+                const response = await fetch('/feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    messageContainer.innerHTML = `
+                        <div class="message success" style="display: block;">
+                            ${currentLang === 'ku' ? 'سوپاس! پەیامەکەت بە سەرکەوتوویی نێردرا.' : 'Thank you! Your message has been sent successfully.'}
+                        </div>
+                    `;
+                    
+                    // Reset form
+                    document.getElementById('feedbackForm').reset();
+                } else {
+                    // Show error message
+                    messageContainer.innerHTML = `
+                        <div class="message error" style="display: block;">
+                            ${currentLang === 'ku' ? 'ببورە، هەڵەیەک ڕویدا. تکایە دواتر هەوڵبدەوە.' : 'Sorry, there was an error. Please try again later.'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageContainer.innerHTML = `
+                    <div class="message error" style="display: block;">
+                        ${currentLang === 'ku' ? 'کێشەیەک لە پەیوەندیدا هەیە. تکایە دواتر هەوڵبدەوە.' : 'Connection error. Please try again later.'}
+                    </div>
+                `;
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.innerText = currentLang === 'ku' ? 'پەیام بنێرە' : 'Send Message';
+                
+                // Scroll to message
+                messageContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
     </script>
 </body>
 </html>

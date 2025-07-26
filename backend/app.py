@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from claude_api import ask_claude
 from chatgpt_api import ask_openai  
+from email_service import send_feedback_email
 from datetime import datetime
 import logging
 
@@ -24,6 +25,12 @@ app.mount("/static", StaticFiles(directory="/app/frontend/static"), name="static
 class ChatMessage(BaseModel):
     message: str
 
+class FeedbackMessage(BaseModel):
+    name: str
+    email: str
+    category: str
+    subject: str
+    message: str
 
 @app.get('/health')
 async def health_check():
@@ -43,6 +50,22 @@ async def chat_api(msg: ChatMessage):
         logging.info(answer)
         return {"response": answer}
 
+
+@app.post("/feedback")
+async def submit_feedback(feedback: FeedbackMessage):
+    try:
+        send_feedback_email(
+            name=feedback.name,
+            email=feedback.email,
+            category=feedback.category,
+            subject=feedback.subject,
+            message=feedback.message
+        )
+        logging.info(f"Feedback submitted by {feedback.name} ({feedback.email})")
+        return {"success": True, "message": "Feedback sent successfully"}
+    except Exception as e:
+        logging.error(f"Feedback submission failed: {str(e)}")
+        return {"success": False, "message": "Failed to send feedback. Please try again."}
 
 @app.get("/")
 async def about(request: Request):
@@ -65,4 +88,6 @@ async def contact(request: Request):
 @app.get("/contact.html")
 async def redirect_contact():
     return RedirectResponse(url="/contact")
+
+    
 
