@@ -234,7 +234,7 @@
             document.getElementById("message").placeholder = t.messagePlaceholder;
         }
 
-        // Form submission handling
+        // Form submission handling - FIXED VERSION
         document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -244,7 +244,8 @@
             
             // Show loading state
             submitBtn.disabled = true;
-            submitText.innerHTML = '<span class="loading"></span> Sending...';
+            const loadingText = currentLang === 'ku' ? 'ناردن...' : 'Sending...';
+            submitText.innerHTML = `<span class="loading"></span> ${loadingText}`;
             
             // Get form data
             const formData = {
@@ -256,39 +257,61 @@
             };
             
             try {
+                console.log('Sending feedback data:', formData);
+                
                 const response = await fetch('/feedback', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(formData)
                 });
                 
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
                 const result = await response.json();
+                console.log('Response data:', result);
+                
+                // Check if response is ok
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} - ${result.message || 'Unknown error'}`);
+                }
                 
                 if (result.success) {
                     // Show success message
                     messageContainer.innerHTML = `
-                        <div class="message success" style="display: block;">
-                            ${currentLang === 'ku' ? 'سوپاس! پەیامەکەت بە سەرکەوتوویی نێردرا.' : 'Thank you! Your message has been sent successfully.'}
+                        <div class="message success" style="display: block !important; padding: 15px; margin: 15px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 8px; font-size: 16px; font-weight: 500;">
+                            ✅ ${currentLang === 'ku' ? 'سوپاس! پەیامەکەت بە سەرکەوتوویی نێردرا و ئیمەیلی پشتڕاستکردنەوەش بۆ ناردرا.' : 'Thank you! Your message has been sent successfully and a confirmation email was sent to you.'}
+                            <br><br>
+                            📧 ${currentLang === 'ku' ? 'تکایە ئیمەیلەکانت بپشکنە (لەوانەیە لە spam فۆڵدەردا بێت)' : 'Please check your email (it might be in spam folder)'}
                         </div>
                     `;
+                    
+                    // Also show an alert for testing
+                    alert(currentLang === 'ku' ? 'پەیام بە سەرکەوتوویی نێردرا! ئیمەیلی پشتڕاستکردنەوەش نێردراوە.' : 'Message sent successfully! Confirmation email has been sent.');
                     
                     // Reset form
                     document.getElementById('feedbackForm').reset();
                 } else {
-                    // Show error message
+                    // Show error message  
+                    const errorMsg = result.message || (currentLang === 'ku' ? 'ببورە، هەڵەیەک ڕویدا. تکایە دواتر هەوڵبدەوە.' : 'Sorry, there was an error. Please try again later.');
                     messageContainer.innerHTML = `
-                        <div class="message error" style="display: block;">
-                            ${currentLang === 'ku' ? 'ببورە، هەڵەیەک ڕویدا. تکایە دواتر هەوڵبدەوە.' : 'Sorry, there was an error. Please try again later.'}
+                        <div class="message error" style="display: block !important; padding: 15px; margin: 15px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; font-size: 16px; font-weight: 500;">
+                            ❌ ${errorMsg}
                         </div>
                     `;
+                    
+                    // Also show an alert for testing
+                    alert('Error: ' + errorMsg);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error details:', error);
+                const errorMessage = error.message || (currentLang === 'ku' ? 'کێشەیەک لە پەیوەندیدا هەیە. تکایە دواتر هەوڵبدەوە.' : 'Connection error. Please try again later.');
                 messageContainer.innerHTML = `
-                    <div class="message error" style="display: block;">
-                        ${currentLang === 'ku' ? 'کێشەیەک لە پەیوەندیدا هەیە. تکایە دواتر هەوڵبدەوە.' : 'Connection error. Please try again later.'}
+                    <div class="message error" style="display: block !important; padding: 15px; margin: 15px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; font-size: 16px; font-weight: 500;">
+                        ❌ ${errorMessage}
                     </div>
                 `;
             } finally {

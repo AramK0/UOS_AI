@@ -21,6 +21,9 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # email configuration
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - SENDER_PASSWORD=${SENDER_PASSWORD}
     
    #at 127.0.0.1:8000 instead of localhost:8000 due to wsl2
     healthcheck:
@@ -44,4 +47,3 @@ services:
      - ./frontend:/app/frontend
      - ./backend:/app/backend
      - ./tests:/app/tests
-   
