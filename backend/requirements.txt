@@ -6,4 +6,5 @@ Jinja2
 dotenv
 httpx
 pytest
+pyyaml
 python-multipart

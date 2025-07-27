@@ -1,0 +1,155 @@
+# Keyword mappings configuration
+# Each category maps to files that should be loaded when those keywords are detected
+
+fees:
+  files: 
+    - fees
+    - fees_kurdish
+  keywords:
+    english: 
+      - fee
+      - cost
+      - price
+      - payment
+      - tuition
+      - parallel
+      - money
+    kurdish:
+      - پارە
+      - کرێ
+      - نرخ
+      - پەرەسەندن
+      - پارالێل
+      - تێچوون
+
+departments:
+  files:
+    - departments
+    - departments_kurdish
+    - staff
+    - staff_kurdish
+  keywords:
+    english:
+      - department
+      - computer
+      - civil
+      - electrical
+      - architectural
+      - water
+      - engineering
+      - faculty
+    kurdish:
+      - بەش
+      - کۆمپیوتەر
+      - شارستانی
+      - کارەبا
+      - تەلارسازی
+      - سەرچاوەی ئاو
+      - ئەندازیاری
+      - ئەندەزیاری
+
+buildings:
+  files:
+    - buildings
+    - buildings_kurdish
+  keywords:
+    english:
+      - building
+      - location
+      - campus
+      - facility
+      - lab
+      - library
+    kurdish:
+      - بینا
+      - شوێن
+      - کامپوس
+      - خولی
+      - تاقیگە
+      - کتێبخانە
+
+academic:
+  files:
+    - academic_calendar
+    - academic_calendar_kurdish
+    - general_info
+    - general_info_kurdish
+  keywords:
+    english:
+      - registration
+      - semester
+      - calendar
+      - schedule
+      - start
+      - zankoline
+      - academic
+      - course
+      - class
+    kurdish:
+      - تۆمارکردن
+      - خولەک
+      - ڕۆژژمێر
+      - خشتە
+      - دەستپێک
+      - زانکۆلاین
+      - فۆڕم
+      - وانە
+      - پۆل
+
+staff:
+  files:
+    - staff
+    - staff_kurdish
+  keywords:
+    english:
+      - dean
+      - head
+      - professor
+      - doctor
+      - shwan
+      - sirwan
+      - chatto
+      - khwrshid
+    kurdish:
+      - دیکان
+      - سەرۆک
+      - بەرپرس
+      - شیوان
+      - سیروان
+      - چاتۆ
+      - خورشید
+      - د.
+      - دکتور
+      - مامۆستا
+
+Numbers:
+  files: 
+  - numbers
+  - numbers_kurdish
+  keywords:
+    english:
+    - studentnumber
+    - numbers
+    - howmany
+    kurdish:
+    - ژمارە
+    - خوێندکار
+    - چەندە
+
+
+# Example of how to add new categories:
+# admissions:
+#   files:
+#     - admissions
+#     - requirements
+#   keywords:
+#     english:
+#       - admission
+#       - apply
+#       - requirement
+#       - gpa
+#     kurdish:
+#       - وەرگرتن
+#       - داخوازی
+#       - مەرج
+#       - نمرە

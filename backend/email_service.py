@@ -1,4 +1,4 @@
-import smtplib
+import smtplib #Its a Library for sending emails through email servers
 import os
 import time
 from email.mime.text import MIMEText
@@ -7,11 +7,13 @@ from datetime import datetime
 import logging
 
 def send_feedback_email(name: str, email: str, category: str, subject: str, message: str):
+
     """
     Send feedback email to hawaall.assistant@gmail.com AND send auto-reply to user
+
     """
     try:
-        # Email configuration
+        #Email configuration
         sender_email = os.getenv("SENDER_EMAIL", "hawaall.assistant@gmail.com")
         sender_password = os.getenv("SENDER_PASSWORD")
         recipient_email = "hawaall.assistant@gmail.com"
@@ -19,28 +21,28 @@ def send_feedback_email(name: str, email: str, category: str, subject: str, mess
         if not sender_password:
             error_msg = "Email password not configured - SENDER_PASSWORD environment variable is missing"
             logging.error(error_msg)
-            raise Exception(error_msg)
+            raise Exception(error_msg) # stops the function and reports the error
         
-        # Connect to Gmail SMTP server once
+        #Connect to Gmail SMTP server once
         logging.info("Connecting to Gmail SMTP server...")
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(sender_email, sender_password)
+        server.login(sender_email, sender_password) #signs into the email account
         
-        # 1. Send feedback to team
+        # 1.Send feedback to team
         team_msg = create_team_notification(sender_email, recipient_email, name, email, category, subject, message)
-        server.sendmail(sender_email, recipient_email, team_msg.as_string())
+        server.sendmail(sender_email, recipient_email, team_msg.as_string()) #sends the emai
         logging.info(f"Team notification sent for feedback from {email}")
         
-        # Small delay to avoid rate limiting
+        #Small delay to avoid rate limiting
         time.sleep(1)
         
-        # 2. Send auto-reply to user
+        #2. Send auto-reply to user
         user_msg = create_user_auto_reply(sender_email, email, name, category, subject)
         server.sendmail(sender_email, email, user_msg.as_string())
         logging.info(f"Auto-reply sent to {email}")
         
-        # Close connection
+        #Close connection
         server.quit()
         
         logging.info(f"Both emails sent successfully for feedback from {email}")
@@ -93,11 +95,11 @@ def create_user_auto_reply(sender_email: str, user_email: str, name: str, catego
     msg['Subject'] = f"✅ Thank you for your feedback - {subject}"
     msg['Reply-To'] = sender_email
     
-    # Add headers to prevent it from being marked as spam
+    #headers to prevent it from being marked as spam
     msg['X-Mailer'] = "Haawall University Assistant"
     msg['X-Priority'] = "3"
     
-    # Create both English and Kurdish versions
+    #both English and Kurdish versions
     body = f"""
 Dear {name},
 
@@ -113,7 +115,7 @@ Your feedback is valuable to us, and our development team will review it careful
  {name}بەڕێز ،
 پشتڕاستکردنەوە: پەیامەکەتان بە سەرکەوتووی گەیەندرا 
 
-سوپاس بۆ پەیوەندیکردنتان لەگەڵ یارمەتیدەری زانکۆ ئمە {category.lower()}ەکەتانمان وەرگرتووە سەبارەت بە "{subject}".
+سوپاس بۆ پەیوەندیکردنتان لەگەڵ یارمەتیدەری زانکۆ  { category.lower() }ەکەتانمان وەرگرتووە سەبارەت بە  "{subject}"
 
 فیدباکەکەتان بۆ ئێمە بەنرخە، و تیمی گەشەپێدانمان بە وردی پێداچوونەوەی بۆ دەکات. پێزانینمان لەوەی کاتتان تەرخان کردووە بۆ یارمەتیدانمان لە باشترکردنی هاوەڵ.
 
@@ -121,19 +123,19 @@ Your feedback is valuable to us, and our development team will review it careful
 
 ---
 
-🎓 Best regards,
+Best regards,
 Haawall Development Team
 College of Engineering, University of Sulaimani
 📧 {sender_email}
 
-🎓 بە ڕێزەوە،
+,بە ڕێزەوە
 تیمی گەشەپێدانی هاواڵ
 کۆلێژی ئەندازیاری، زانکۆی سلێمانی
 📧 {sender_email}
 
 ---
-⚠️  This is an automated response. Please do not reply to this email.
-⚠️  ئەمە وەڵامێکی خۆکارە. تکایە وەڵامی ئەم ئیمەیلە مەدەنەوە.
+⚠️  ALERT: This is an automated response. Please do not reply to this email.
+⚠️  ئاگاداری: ئەمە وەڵامێکی خۆکارە. تکایە وەڵامی ئەم ئیمەیلە مەدەنەوە
 
 🕒 Sent: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
     """

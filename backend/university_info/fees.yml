@@ -1,0 +1,10 @@
+parallel_program_fees:
+  architectural_engineering: "2,750,000 IQD"
+  computer_engineering: "2,750,000 IQD" 
+  civil_engineering: "2,250,000 IQD"
+  electrical_engineering: "2,250,000 IQD"
+  water_resources_engineering: "2,250,000 IQD"
+
+payment_info:
+  currency: "Iraqi Dinar (IQD)"
+  payment_schedule: "Per semester"

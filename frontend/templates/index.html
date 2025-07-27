@@ -30,14 +30,14 @@
           <a href="contact.html" class="nav-link contact-btn">Contact Us</a>
         </nav>
         
-        <!-- FAQ Button - Keep only this one -->
+        <!-- FAQ Button - -->
         <button class="faq-button" onclick="toggleFAQ()" id="faqButton">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
           </svg>
         </button>
         
-        <!-- FAQ Dropdown - Keep only this one -->
+        <!-- FAQ Dropdown -  -->
         <div class="faq-dropdown" id="faqDropdown">
           <div class="faq-header">Frequently Asked Questions</div>
           <div class="faq-list" id="faqList">
@@ -91,6 +91,7 @@
         </div>
 
         <!-- Chat Messages -->
+
          <!-- these are messages that are shown through out the chat -->
         <div class="messages" id="messages">  </div>
         
@@ -128,8 +129,8 @@
     </div>
 
 <script>
-// Replace your existing JavaScript with these fixes:
 
+ // translations
 let currentLang = 'en';
 let faqOpen = false;
 
@@ -241,7 +242,7 @@ function handleKeyDown(event) {
   }
 }
 
-// FIXED: Better textarea height adjustment with proper scroll compensation
+// FIXED: Better textarea height adjustment with proper scroll compensation - scrolling fixes
 function adjustTextareaHeight() {
   const textarea = document.getElementById('messageInput');
   
@@ -265,7 +266,7 @@ function adjustTextareaHeight() {
   }
 }
 
-// FIXED: Enhanced input focus handling with proper scroll management
+//  Enhanced input focus handling with proper scroll management
 function handleInputFocus() {
   const inputArea = document.getElementById('inputArea');
   
@@ -291,7 +292,7 @@ function handleInputFocus() {
   }
 }
 
-// FIXED: Better input blur handling
+// Better input blur handling
 function handleInputBlur() {
   const inputArea = document.getElementById('inputArea');
   

@@ -1,0 +1,19 @@
+{
+    "engineering_departments": [
+        "Computer Engineering",
+        "Civil Engineering", 
+        "Electrical Engineering",
+        "Water Resources Engineering",
+        "Architectural Engineering"
+    ],
+    "computer_engineering": {
+        "building": "Building No. 4",
+        "campus": "UOS New Campus",
+        "head": "Dr. Shwan Chatto",
+        "classes": {
+            "first_semester": "University Work Envicornment, English Language Level 1,2, Kurdology, Calculus1, Electrical Circuits, Compputer Fundamentals, Engineering Drawing",
+            "second_semester": "Logic Design1, Calculus 2, Physical Education, English lang level 3, Physical Electronics, Professional Skills, Programming Concepts and Algorithms(in Java)"
+
+            }
+    }
+}

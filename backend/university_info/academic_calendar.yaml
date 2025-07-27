@@ -1,0 +1,12 @@
+emester_schedule:
+  fall_semester:
+    start_month: 9
+    description: "Main academic semester starting in September"
+  
+registration:
+  requirement: "Zankoline form completion"
+  timeline: "Before semester start"
+  
+important_dates:
+  - "Registration opens after Zankoline completion"
+  - "Fall semester begins in September"

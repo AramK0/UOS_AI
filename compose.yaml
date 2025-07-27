@@ -27,7 +27,7 @@ services:
     
    #at 127.0.0.1:8000 instead of localhost:8000 due to wsl2
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://127.0.0.1:8000/health"]
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:8000/health || exit 1"]
       interval: 1m30s
       timeout: 30s
       retries: 5

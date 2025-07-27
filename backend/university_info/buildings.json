@@ -1,0 +1,12 @@
+{
+    "new_campus": {
+        "building_4": {
+            "departments": ["Computer Engineering"],
+            "description": "Houses the Computer Engineering Department"
+        }
+    },
+    "facilities": {
+        "laboratories": "Modern computer and engineering labs",
+        "library": "Central university library with digital resources"
+    }
+}

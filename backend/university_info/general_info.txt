@@ -1,0 +1,11 @@
+# university_info/general_info.txt
+University of Sulaimani is located in Sulaymaniyah, Kurdistan Region of Iraq.
+
+Key Information:
+- Registration starts after filling Zankoline form
+- Semester starts in month 9 (September)
+- The university has both old and new campus locations
+
+Academic Programs:
+- Undergraduate programs in various engineering disciplines
+- Parallel program options available for most departments
