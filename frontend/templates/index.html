@@ -137,6 +137,10 @@
         </div>
     </div>
 
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
 <script>
 // global variables
 let currentLang = 'en';
@@ -245,13 +249,19 @@ function detectKurdishText(text) {
 function updateInputState() {
     const input = document.getElementById('messageInput');
     const sendButton = document.getElementById('sendButton');
-    const inputContainer = document.querySelector('.input-container');
+    const quickActionBtns = document.querySelectorAll('.quick-action-btn');
     
     if (isAIResponding) {
         // disable while AI responds
         input.disabled = true;
+        input.classList.add('loading');
         sendButton.disabled = true;
-        inputContainer.classList.add('disabled');
+        sendButton.classList.add('loading');
+        
+        // disable quick action buttons
+        quickActionBtns.forEach(btn => {
+            btn.classList.add('loading');
+        });
         
         // update placeholder
         const originalPlaceholder = input.placeholder;
@@ -262,8 +272,14 @@ function updateInputState() {
     } else {
         // re-enable input
         input.disabled = false;
+        input.classList.remove('loading');
         sendButton.disabled = false;
-        inputContainer.classList.remove('disabled');
+        sendButton.classList.remove('loading');
+        
+        // re-enable quick action buttons
+        quickActionBtns.forEach(btn => {
+            btn.classList.remove('loading');
+        });
         
         // restore placeholder
         const originalPlaceholder = input.getAttribute('data-original-placeholder');
@@ -276,6 +292,42 @@ function updateInputState() {
         // focus for better UX
         input.focus();
     }
+}
+
+// show loading overlay
+function showLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.add('show');
+    }
+}
+
+// hide loading overlay
+function hideLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
+}
+
+// add message skeleton while loading
+function addMessageSkeleton() {
+    const messagesContainer = document.getElementById('messages');
+    const skeletonDiv = document.createElement('div');
+    skeletonDiv.className = 'message-skeleton';
+    skeletonDiv.id = 'messageSkeleton';
+    
+    skeletonDiv.innerHTML = `
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(skeletonDiv);
+    scrollToBottom();
 }
 
 //Free scrolling during AI response ->>. no forced scrolling
@@ -670,6 +722,13 @@ function handleInputBlur() {
 // send example prompt
 function sendExamplePrompt(promptIndex) {
   if (isAIResponding) {
+    // show user feedback
+    const warningMsg = currentLang === 'ku' 
+      ? 'تکایە چاوەڕێ بکە تا هاوەڵ وەڵام بداتەوە'
+      : 'Please wait for Haawall to finish responding';
+    
+    // could add a toast notification here
+    console.log(warningMsg);
     return;
   }
   
@@ -708,7 +767,9 @@ function sendMessage(customMessage = null) {
   input.value = '';
   input.style.height = 'auto';
 
+  // show enhanced loading states
   showTypingIndicator();
+  addMessageSkeleton();
 
   fetch('/chat', {
     method: 'POST',
@@ -721,6 +782,12 @@ function sendMessage(customMessage = null) {
     })
   })
     .then(response => {
+      // remove skeleton on response
+      const skeleton = document.getElementById('messageSkeleton');
+      if (skeleton) {
+        skeleton.remove();
+      }
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -747,6 +814,12 @@ function sendMessage(customMessage = null) {
       }, 300);
     })
     .catch(error => {
+      // remove skeleton on error
+      const skeleton = document.getElementById('messageSkeleton');
+      if (skeleton) {
+        skeleton.remove();
+      }
+      
       hideTypingIndicator();
       console.error('Error:', error);
       
